@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
 
   // when user clicks login
-  document.querySelector('#submit-login').onclick = () => {
-
+  document.querySelector('#submit-login').onclick = (e) => {
+    e.stopPropagation();
     const username = document.querySelector('#username').value;
     const password = document.querySelector('#password').value;
     //check if username and password is filled in
@@ -44,21 +44,22 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   //when user click Register button
-  document.querySelector('#submit-register').onclick = () => {
-
+  document.querySelector('#submit-register').onclick = (e) => {
+    e.stopPropagation();
     // Ensure that all registration information was entered
     const username = document.querySelector('#register-username').value;
     const password = document.querySelector('#register-password').value;
     const first_name = document.querySelector('#register-first-name').value;
     const last_name = document.querySelector('#register-last-name').value;
     const email = document.querySelector('#register-email').value;
-    if (!username && !password && !first_name && !last_name && !email) {
+    const terms = document.querySelector('#register-terms').checked;
+    if (username && password && first_name && last_name && email && terms) {
 
       // make an AJAX call to server
       const request = new XMLHttpRequest();
       request.open('POST', '/register');
       // get csrf token and set it to request header
-      const csrf_token = document.querySelector('#csrf').childNodes[0]['value'];
+      const csrf_token = document.querySelector('#csrf_token').childNodes[0]['value'];
       request.setRequestHeader("X-CSRFToken", csrf_token);
 
       // prepare body
@@ -99,15 +100,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
   //populate toppings and extras which we got above into their respective html elements
   let toppings = JSON.parse(storage_toppings);
-  console.log(toppings);
   toppings.forEach(i => {
     let topping = i['fields']['name'];
-    console.log(topping);
     document.querySelector('.landing-toppings').innerHTML += (toppings.indexOf(i) ? ', ' : '') + topping;
   });
 
   let extras = JSON.parse(storage_extras);
-  console.log(extras);
 
   extras.forEach(i => {
     let extra = i['fields']['item'];

@@ -71,7 +71,7 @@ def logout_view(request):
         Log out user.
     """
     logout(request)
-    return render(request, 'orders/landing.html', {'message': 'Logged out.'})
+    return HttpResponseRedirect(reverse('index'))
 
 
 def register_view(request):
@@ -93,7 +93,7 @@ def register_view(request):
                                                 last_name=last_name)
             new_user.save()
             login(request, new_user)
-            return HttpResponseRedirect(reverse('index'))
+            return HttpResponse('{"success": true, "message": ""}')
         else:
             return render(request,
                           'orders/landing.html',
