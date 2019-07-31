@@ -38,6 +38,17 @@ export SECRET_KEY=my_secret
 * Python v3.7.3
 * Django
 
+## Some sample screenshots
+##### Login
+![Alt text](/../master/examples/login.png?raw=true "Login")
+##### Landing
+![Alt text](/../master/examples/landing.png?raw=true "Landing")
+##### Menu
+![Alt text](/../master/examples/menu.png?raw=true "Menu")
+##### Admin Orders
+![Alt text](/../master/examples/admin_orders.png?raw=true "Admin Orders")
+##### Pending Orders
+![Alt text](/../master/examples/pending_orders.png?raw=true "Pending Orders")
 
 ### Project Files
 1. views.py - controls what happens when a user visits a URL route (acts like app.py, or application.py, in a FLASK application)
