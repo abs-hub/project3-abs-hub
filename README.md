@@ -43,7 +43,7 @@ export SECRET_KEY=my_secret
 * Python v3.7.3
 * Django
 * AJAX
-* SQLite
+* SQLite3
 
 ## Some sample screenshots
 ##### Login
@@ -65,5 +65,16 @@ export SECRET_KEY=my_secret
 python3 manage.py makemigrations
 python3 manage.py migrate
 ```
-3. static/imgs/favicon.ico- required favicon.ico for the website.
-4. admin.py -- add models from ~/orders/models.py to admin.py in order to track them using the built-in Django admin GUI  
+3. static/img/favicon.ico- required favicon.ico for the website.
+4. admin.py -- add models from ~/orders/models.py to admin.py in order to track them using the built-in Django admin GUI.
+5. urls.py - Used to define app routes like we do in flask, but this is all at one place.
+6. base.html - it is re-usable template used in different pages.
+7. index.html - this is the main menu page where logging in user can select food items and add to cart.
+8. landing.html - readonly view of menu item with options to login, register.
+9. Miscellaneous page- cart.html (shows items added to the card),
+                       checkout.html (rendered when checkout is clicked),
+                       history.html (show historical order),
+                       orders.html (rendered only for admins to view all orders),
+                       pending.html (rendered when pending tab is clicked, shows places orders which are yet to be processed),
+                       thanks.html (rendered after placing order)
+
