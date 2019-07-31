@@ -1,4 +1,4 @@
-# Project 2: Flack
+# Project 3: Pizza
 
 This project utilizes python, Django, JavaScript, AJAX and uses python libraries like DJANGO. The objective behind this project is to get use to to DJANGO.
 
