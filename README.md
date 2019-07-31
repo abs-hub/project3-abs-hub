@@ -1,6 +1,6 @@
 # Project 3: Pizza
 
-This project utilizes python, Django, JavaScript, AJAX and uses python libraries like DJANGO. The objective behind this project is to get use to to DJANGO.
+This project utilizes python, Django, JavaScript, AJAX and uses python uses Django framework. The objective behind this project is to get use to to Django.
 
 # Requirements
 https://cs50.harvard.edu/web/2019/summer/projects/3/#requirements
