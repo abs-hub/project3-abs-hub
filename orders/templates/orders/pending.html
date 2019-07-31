@@ -1,0 +1,111 @@
+{% extends 'orders/base.html' %}
+{% load static %}
+<!-- Title -->
+{% block title %} Pinocchio's Pizza & Subs {% endblock %}
+
+{% block headJS %} {% endblock %}
+
+{% block leftnav %}
+
+{% if user.is_authenticated %}
+
+<ul class="navbar-nav mx-auto">
+  <li class="nav-item">
+    <a class="nav-item nav-link" href="{% url 'cart' %}">Cart ({{ cart_count }})<span
+        class="sr-only">(current)</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-item nav-link active" href="{% url 'pending' %}">Pending Orders</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-item nav-link" href="{% url 'history' %}">Order History</a>
+  </li>
+</ul>
+<ul class="navbar-nav ml-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="#">{{ user.first_name }}</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'logout' %}">
+      <span class="fa fa-sign-out"></span>
+      Logout</a>
+  </li>
+</ul>
+{% endif %}
+
+{% endblock %}
+
+{% block rightnav %} {% endblock %}
+
+{% block content %}
+
+{% if message %}
+<div class="context-message">
+  {{ message }}
+</div>
+{% endif %}
+
+<table class="text-center">
+  <tr class="topbottomspace">
+    <th><h2>Pending Orders</h2></th>
+  </tr>
+</table>
+<div class="table responsive">
+  <table class="table table-bordered">
+    <tbody>
+    <tr>
+      <td>
+        <div class="container">
+          {% if not orders %}
+          <div class="row justify-content-center">
+            No pending orders.
+          </div>
+          {% else %}
+          <div class="row justify-content-center">
+            {% for order in orders %}
+            <div class="col-2 col-md-4 col-lg-3 border-bottom mb-4">
+              <ul class="list-unstyled">
+                <li><span style="font-weight: bold">{{ order }}</span></li>
+                <li>{{ order.timestamp }}</li>
+              </ul>
+            </div>
+            <div class="col-10 col-sm-10 col-md-8 col-lg-9 border-bottom mb-4">
+              {% for item in order.items.all %}
+              <div class="row justify-content-center">
+                <div class="col-9 col-md-9 col-lg-6">
+                  {{ item.category }}- {{ item.item }}
+                  <ul class="list-unstyled mb-0" style="padding-left: 0.5em">
+                    <li>{{ item.toppings }} {{ item.extras }}
+                      {% if item.extras_price > 0 %}-
+                      {{ item.extras_price }}
+                      {% endif %}
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-3 col-sm-3 col-md-3 col-lg-2 text-right">
+                  {{ item.price }}
+                </div>
+              </div>
+              {% endfor %}
+              <div class="row justify-content-center">
+                <div class="col-9 col-md-9 col-lg-6">
+                </div>
+                <div style="font-weight: bold" class="col-3 col-sm-3 col-md-3 col-lg-2 text-right">
+                  ${{ order.total }}
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="row justify-content-center">
+            <a href="{% url 'index' %}">Back to Menu</a>
+          </div>
+          {% endif %}
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+{% endblock content %}

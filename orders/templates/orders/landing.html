@@ -1,0 +1,253 @@
+{% extends 'orders/base.html' %}
+{% load static %}
+<!-- Title -->
+{% block title %} Pinocchio's Pizza & Subs {% endblock %}
+
+<!-- JavaScript -->
+{% block headJS %}
+<script src="{% static 'js/landing.js' %}"></script>
+{% endblock %}
+
+{% block leftnav %}{% endblock %}
+
+{% block rightnav %}
+<div id="csrf_token">{% csrf_token %}</div>
+<ul class="nav navbar-nav navbar-right ml-auto">
+  <li class="nav-item">
+    <a data-toggle="dropdown" class="nav-link dropdown-toggle" href="#">Login</a>
+    <ul class="dropdown-menu form-wrapper">
+      <!-- Login -->
+      <li>
+        <form method="post">
+          <!-- social networking links work is in progress -->
+          <p class="hint-text">Sign in with your social media account</p>
+          <div class="form-group social-btn clearfix">
+            <a href="#" class="btn btn-primary pull-left"><i class="fa fa-facebook"></i> Facebook</a>
+            <a href="#" class="btn btn-info pull-right"><i class="fa fa-twitter"></i> Twitter</a>
+          </div>
+          <div class="or-seperator"><b>or</b></div>
+          <div class="form-group">
+            <input id="username" name="username" type="text" class="form-control" placeholder="Username"
+                   required="required">
+          </div>
+          <div class="form-group">
+            <input id="password" name="password" type="password" class="form-control" placeholder="Password"
+                   required="required">
+          </div>
+          <button id="submit-login" class="btn btn-primary btn-block">Login</button>
+          <div class="error-login"></div>
+          <div class="form-footer">
+            <a href="#">Forgot Your password?</a>
+          </div>
+        </form>
+      </li>
+    </ul>
+  </li>
+  <!-- Register -->
+  <li class="nav-item">
+    <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle get-started-btn mt-1 mb-1">Sign up</a>
+    <ul class="dropdown-menu form-wrapper">
+      <li>
+        <form method="post">
+          <p class="hint-text">Fill in this form to create your account!</p>
+          <div class="form-group">
+            <input id="register-username" name="username" type="text" placeholder="Username" required/>
+          </div>
+          <div class="form-group">
+            <input id="register-password" name="password" type="password" placeholder="Password" required/>
+          </div>
+          <div class="form-group">
+            <input id="register-first-name" name="first_name" type="text" placeholder="First name" required/>
+          </div>
+          <div class="form-group">
+            <input id="register-last-name" name="last_name" type="text" placeholder="Last name" required/>
+          </div>
+          <div class="form-group">
+            <input id="register-email" name="email" type="text" placeholder="Email" required/>
+          </div>
+          <div class="form-group">
+            <label class="checkbox-inline"><input type="checkbox" required="required"> I accept the <a href="#">Terms
+              &amp; Conditions</a></label>
+          </div>
+          <button id="submit-register" class="btn btn-primary btn-block">Register</button>
+        </form>
+        <div class="error-register"></div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+{% endblock %}
+
+{% block content %}
+
+<!-- Storage for Toppings/Extras -->
+<div id="storage" data-storage_toppings="{{ toppings }}" data-storage_extras="{{ extras }}"></div>
+
+<div class="row">
+  <div class="col-md-6">
+    <table>
+
+      <!-- Regular Pizza -->
+      <tr>
+        <td><strong>Regular Pizza</strong></td>
+        <td>Small</td>
+        <td>Large</td>
+      </tr>
+      {% for item in regular_pizza %}
+      <tr id="{{ item.category }} + {{ item.item }}">
+        <td>{{ item.item }}</td>
+        <td>{{ item.price_sm }}</td>
+        <td>{{ item.price_lg }}</td>
+      </tr>
+      {% endfor %}
+
+      <tr>
+        <td colspan=3>
+          <hr>
+        </td>
+      </tr>
+
+      <!-- Sicialian Pizza -->
+      <tr>
+        <td><strong>Sicilian Pizza</strong></td>
+        <td>Small</td>
+        <td>Large</td>
+      </tr>
+      {% for item in sicilian_pizza %}
+      <tr id="{{ item.category }} + {{ item.item }}">
+        <td>{{ item.item }}</td>
+        <td>{{ item.price_sm }}</td>
+        <td>{{ item.price_lg }}</td>
+      </tr>
+      {% endfor %}
+
+      <tr>
+        <td colspan=3>
+          <hr>
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="3">
+          <strong>Toppings</strong>
+          <div class="landing-toppings"></div>
+        </td>
+
+      </tr>
+
+      <tr>
+        <td colspan="3">
+          <hr>
+        </td>
+      </tr>
+      <!-- Pasta -->
+      <tr>
+        <td><strong>Pasta</strong></td>
+        <td></td>
+      </tr>
+      {% for item in pasta %}
+      <tr>
+        <td>{{ item.item }}</td>
+        <td>{{ item.price }}</td>
+      </tr>
+      {% endfor %}
+
+      <tr>
+        <td colspan="3">
+          <hr>
+        </td>
+      </tr>
+
+      <!-- Salads -->
+      <tr>
+        <td><strong>Salads</strong></td>
+        <td></td>
+      </tr>
+      {% for item in salads %}
+      <tr>
+        <td>{{ item.item }}</td>
+        <td>{{ item.price }}</td>
+      </tr>
+      {% endfor %}
+
+      <tr>
+        <td colspan="3">
+          <hr>
+        </td>
+      </tr>
+
+    </table>
+  </div>
+
+  <div class="col-md-6">
+    <table>
+
+      <!-- Subs -->
+      <tr>
+        <td><strong>Subs</strong></td>
+        <td>Small</td>
+        <td>Large</td>
+      </tr>
+      {% for item in subs %}
+        {% if item.item != "Sausage, Peppers & Onions" and item.item != "Steak + Cheese" %}
+        <tr id="{{ item.category }} + {{ item.item }}">
+          <td>{{ item.item }}</td>
+          <td>{{ item.price_sm }}</td>
+          <td>{{ item.price_lg }}</td>
+        </tr>
+        {% elif item.item == 'Steak + Cheese' %}
+        <tr id="{{ item.category }} + {{ item.item }}">
+          <td>{{ item.item }} *</td>
+          <td>{{ item.price_sm }}</td>
+          <td>{{ item.price_lg }}</td>
+        </tr>
+        {% elif item.item == 'Sausage, Peppers & Onions' %}
+        <tr id="{{ item.category }} + {{ item.item }}">
+          <td>{{ item.item }}</td>
+          <td></td>
+          <td>{{ item.price_lg }}</td>
+        </tr>
+        {% endif %}
+      {% endfor %}
+      <tr>
+        <td colspan=3>* Add <span class="landing-extras"></span> for +0.50 each</td>
+      </tr>
+      <tr>
+        <td colspan=3>Extra Cheese on any sub +0.50</td>
+      </tr>
+
+      <tr>
+        <td colspan=3>
+          <hr>
+        </td>
+      </tr>
+
+      <!-- Dinner Platters -->
+      <tr>
+        <td><strong>Dinner Platters</strong></td>
+        <td>Small</td>
+        <td>Large</td>
+      </tr>
+      {% for item in platters %}
+      {% if item.category == 'Dinner Platters' %}
+      <tr>
+        <td>{{ item.item }}</td>
+        <td>{{ item.price_sm }}</td>
+        <td>{{ item.price_lg }}</td>
+      </tr>
+      {% endif %}
+      {% endfor %}
+
+      <tr>
+        <td colspan=3>
+          <hr>
+        </td>
+      </tr>
+
+    </table>
+  </div>
+</div>
+
+{% endblock %}
+

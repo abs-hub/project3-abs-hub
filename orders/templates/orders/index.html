@@ -1,0 +1,325 @@
+{% extends 'orders/base.html' %}
+{% load static %}
+<!-- Title -->
+{% block title %} Pinocchio's Pizza & Subs {% endblock %}
+
+{% block headJS %}
+<script src="{% static 'js/index.js' %}"></script>{% endblock%}
+
+{% block leftnav %}
+
+{% if user.is_authenticated %}
+
+<ul class="navbar-nav mx-auto">
+  <li class="nav-item">
+    <a class="nav-item nav-link" href="{% url 'cart' %}">Cart ({{ cart_count }})<span class="sr-only">(current)</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-item nav-link" href="{% url 'pending' %}">Pending Orders</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-item nav-link" href="{% url 'history' %}">Order History</a>
+  </li>
+</ul>
+<ul class="navbar-nav ml-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="#">{{ user.first_name }}</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'logout' %}">
+      <span class="fa fa-sign-out"></span>
+      Logout</a>
+  </li>
+</ul>
+{% endif %}
+
+{% endblock %}
+
+{% block rightnav %} {% endblock %}
+
+{% block content %}
+<div id="csrf_token">{% csrf_token %}</div>
+
+<div class="error-selections"></div>
+<div class="row">
+  <div class="col-md-6">
+    <table class="table table-borderless">
+      <tbody id="first_table">
+
+      <!-- Regular Pizza -->
+      <tr>
+        <td>
+          <div class="row">
+            <h5 class="text-info"><strong>Regular Pizza</strong></h5>
+          </div>
+        </td>
+        <td>Small</td>
+        <td>Large</td>
+        <td></td>
+      </tr>
+      {% for item in regular_pizza %}
+      <tr id="{{ item.category }} + {{ item.item }}">
+        <td>{{ item.item }}</td>
+        <td>
+          {{ item.price_sm }}
+          <label>
+            <input type="checkbox" data-category="{{ item.category }}"
+                   data-tr_id="{{ item.category }} + {{ item.item }}" data-td_id="{{ item.item }} + {{ item.price_sm }}"
+                   name="{{ item.item }}" value="{{ item.price_sm }}"
+                   data-toppings="{% if item.max_toppings %}true{% endif %}" data-limit="{{ item.max_toppings }}"
+                   data-size="Small"/>
+
+          </label>
+        </td>
+        <td>
+          {{ item.price_lg }}
+          <label>
+            <input type="checkbox" data-category="{{ item.category }}" data-tr_id="{{ item.category }} + {{ item.item }}"
+                   data-td_id="{{ item.item }} + {{ item.price_lg }}" name="{{ item.item }}" value="{{ item.price_lg }}"
+                   data-toppings="{% if item.max_toppings %}true{% endif %}" data-limit="{{ item.max_toppings }}"
+                   data-size="Large"/>
+
+          </label>
+        </td>
+        <td>
+          <a href="#" class="add-to-cart" data-tr_id="{{ item.category }} + {{ item.item }}">
+          <i class="fa fa-plus my-float"></i>
+        </a>
+        </td>
+      </tr>
+      {% endfor %}
+
+      <tr>
+        <td colspan="4">
+          <hr>
+        </td>
+      </tr>
+
+      <!-- Sicialian Pizza -->
+      <tr>
+        <td>
+          <div class="row">
+            <h5 class="text-info"><strong>Sicialian Pizza</strong></h5>
+          </div>
+        </td>
+        <td>Small</td>
+        <td>Large</td>
+        <td></td>
+      </tr>
+      {% for item in sicilian_pizza %}
+      <tr id="{{ item.category }} + {{ item.item }}">
+        <td>{{ item.item }}</td>
+        <td>
+          {{ item.price_sm }}
+          <label>
+            <input type="checkbox" data-category="{{ item.category }}" data-tr_id="{{ item.category }} + {{ item.item }}"
+                   data-td_id="{{ item.item }} + {{ item.price_sm }}" name="{{ item.item }}" value="{{ item.price_sm }}"
+                   data-toppings="{% if item.max_toppings %}true{% endif %}" data-limit="{{ item.max_toppings }}"
+                   data-size="Small"/>
+
+          </label>
+        </td>
+        <td>
+          {{ item.price_lg }}
+          <label>
+            <input type="checkbox" data-category="{{ item.category }}" data-tr_id="{{ item.category }} + {{ item.item }}"
+                   data-td_id="{{ item.item }} + {{ item.price_lg }}" name="{{ item.item }}" value="{{ item.price_lg }}"
+                   data-toppings="{% if item.max_toppings %}true{% endif %}" data-limit="{{ item.max_toppings }}"
+                   data-size="Large"/>
+
+          </label>
+        </td>
+        <td>
+          <a href="#" class="add-to-cart" data-tr_id="{{ item.category }} + {{ item.item }}">
+            <i class="fa fa-plus my-float"></i>
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+
+      <tr>
+        <td colspan="4">
+          <hr>
+        </td>
+      </tr>
+
+      <!-- Pasta -->
+      <tr>
+        <td>
+          <div class="row">
+            <h5 class="text-info"><strong>Pasta</strong></h5>
+          </div>
+        </td>
+        <td>Price</td>
+        <td></td>
+      </tr>
+      {% for item in pasta %}
+      <tr>
+        <td>{{ item.item }}</td>
+        <td>
+          {{ item.price }}
+          <label>
+            <input type="checkbox" data-category="{{ item.category }}" data-tr_id="{{ item.category }} + {{ item.item }}"
+                   data-td_id="{{ item.item }} + {{ item.price }}" name="{{ item.item }}" value="{{ item.price }}"
+                   data-toppings="false"/>
+
+          </label>
+        </td>
+        <td>
+          <a href="#" class="add-to-cart" data-tr_id="{{ item.category }} + {{ item.item }}">
+            <i class="fa fa-plus my-float"></i>
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+
+      <tr>
+        <td colspan="4">
+          <hr>
+        </td>
+      </tr>
+
+      <!-- Salads -->
+      <tr>
+        <td>
+          <div class="row">
+            <h5 class="text-info"><strong>Salads</strong></h5>
+          </div>
+        </td>
+        <td>Price</td>
+        <td></td>
+      </tr>
+      {% for item in salads %}
+      <tr>
+        <td>{{ item.item }}</td>
+        <td>
+          {{ item.price }}
+          <label>
+            <input type="checkbox" data-category="{{ item.category }}" data-tr_id="{{ item.category }} + {{ item.item }}"
+                   data-td_id="{{ item.item }} + {{ item.price }}" name="{{ item.item }}" value="{{ item.price }}"
+                   data-toppings="false"/>
+
+          </label>
+        </td>
+        <td>
+          <a href="#" class="add-to-cart" data-tr_id="{{ item.category }} + {{ item.item }}">
+            <i class="fa fa-plus my-float"></i>
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+
+      <tr>
+        <td colspan="4">
+          <hr>
+        </td>
+      </tr>
+
+      </tbody>
+    </table>
+
+  </div>
+  <div class="col-md-6">
+    <table class="table table-borderless">
+      <tbody id="second_table">
+
+      <!-- Subs -->
+      <tr>
+        <td>
+          <div class="row">
+            <h5 class="text-info"><strong>Subs</strong></h5>
+          </div>
+        <td>Small</td>
+        <td>Large</td>
+        <td></td>
+      </tr>
+      {% for item in subs %}
+      <tr id="{{ item.category }} + {{ item.item }}">
+        <td>{{ item.item }}</td>
+        <td>
+          {% if item.price_sm %}
+          {{ item.price_sm }}
+          <label>
+            <input type="checkbox" data-category="{{ item.category }}" data-tr_id="{{ item.category }} + {{ item.item }}"
+                   data-td_id="{{ item.item }} + {{ item.price_sm }}" name="{{ item.item }}" value="{{ item.price_sm }}"
+                   data-extras="{% if item.has_extras %}true{% endif %}" data-size="Small"/>
+
+          </label>
+          {% endif %}
+        </td>
+        <td>
+          {{ item.price_lg }}
+          <label>
+            <input type="checkbox" data-category="{{ item.category }}" data-tr_id="{{ item.category }} + {{ item.item }}"
+                   data-td_id="{{ item.item }} + {{ item.price_lg }}" name="{{ item.item }}" value="{{ item.price_lg }}"
+                   data-extras="{% if item.has_extras %}true{% endif %}" data-size="Large"/>
+
+          </label>
+        </td>
+        <td>
+          <a href="#" class="add-to-cart" data-tr_id="{{ item.category }} + {{ item.item }}">
+            <i class="fa fa-plus my-float"></i>
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+
+      <tr>
+        <td colspan="4">
+          <hr>
+        </td>
+      </tr>
+
+      <!-- Dinner Platters -->
+      <tr>
+        <td>
+          <div class="row">
+            <h5 class="text-info"><strong>Dinner Platters</strong></h5>
+          </div>
+        </td>
+        <td>Small</td>
+        <td>Large</td>
+        <td></td>
+      </tr>
+      {% for item in platters %}
+      <tr>
+        <td>{{ item.item }}</td>
+        <td>
+          {{ item.price_sm }}
+          <label>
+            <input type="checkbox" data-category="{{ item.category }}" data-tr_id="{{ item.category }} + {{ item.item }}"
+                   data-td_id="{{ item.item }} + {{ item.price_sm }}" name="{{ item.item }}" value="{{ item.price_sm }}"
+                   data-toppings="false" data-size="Small"/>
+
+          </label>
+        </td>
+        <td>
+          {{ item.price_lg }}
+          <label>
+            <input type="checkbox" data-category="{{ item.category }}" data-tr_id="{{ item.category }} + {{ item.item }}"
+                   data-td_id="{{ item.item }} + {{ item.price_lg }}" name="{{ item.item }}" value="{{ item.price_lg }}"
+                   data-toppings="false" data-size="Large"/>
+
+          </label>
+        </td>
+        <td>
+          <a href="#" class="add-to-cart" data-tr_id="{{ item.category }} + {{ item.item }}">
+            <i class="fa fa-plus my-float"></i>
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+
+      <tr>
+        <td colspan="4">
+          <hr>
+        </td>
+      </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div id="storage" data-storage_toppings="{{ toppings }}" data-storage_extras="{{ extras }}"></div>
+{% endblock content %}

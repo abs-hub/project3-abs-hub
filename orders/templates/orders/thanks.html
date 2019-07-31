@@ -1,0 +1,71 @@
+{% extends 'orders/base.html' %}
+{% load static %}
+<!-- Title -->
+{% block title %} Pinocchio's Pizza & Subs {% endblock %}
+
+{% block headJS %} {% endblock %}
+
+{% block leftnav %}
+
+{% if user.is_authenticated %}
+
+<ul class="navbar-nav mx-auto">
+  <li class="nav-item">
+    <a class="nav-item nav-link active" href="{% url 'cart' %}">Cart ({{ cart_count }})<span
+        class="sr-only">(current)</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-item nav-link" href="{% url 'pending' %}">Pending Orders</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-item nav-link" href="{% url 'history' %}">Order History</a>
+  </li>
+</ul>
+<ul class="navbar-nav ml-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="#">{{ user.first_name }}</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'logout' %}">
+      <span class="fa fa-sign-out"></span>
+      Logout</a>
+  </li>
+</ul>
+{% endif %}
+
+{% endblock %}
+
+{% block rightnav %} {% endblock %}
+
+{% block content %}
+
+{% if message %}
+<div class="context-message">
+  {{ message }}
+</div>
+{% endif %}
+
+<table class="text-center">
+  <tr class="topspace">
+    <th><h2>Thanks for your order, {{ user.first_name }}!</h2></th>
+  </tr>
+  <tr>
+    <td>
+      <small>Order #{{ order.id }}</small>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <h5><em>We're on it!</em></h5>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <nav class="nav flex-column">
+        <a class="nav-link" href="{% url 'index' %}">Back to menu</a>
+      </nav>
+    </td>
+  </tr>
+</table>
+
+{% endblock content %}
