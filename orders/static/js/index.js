@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const storage_extras = storage.dataset.storage_extras;
   const storage_toppings = storage.dataset.storage_toppings;
 
-  active_selections = []
+  let active_selections = []
 
   // Attach 'click' event listeners to all <input> checkboxes on page load
   let all_inputs = document.querySelectorAll('input')
@@ -165,40 +165,31 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // Scenario 1: Handle a different checkbox being clicked, but on the same
       // row as an active selection
-      del_scenario_1 = []
+      let del_scenario_1 = []
       for (let i = 0; i < active_selections.length; i++) {
         if (active_selections[i]) {
           if (!(active_selections[i]['td_id'] === td_id) && active_selections[i]['tr_id'] === tr_id) {
             del_scenario_1.push(i);
           }
-          ;
         }
-        ;
       }
-      ;
       if (del_scenario_1.length === 1) {
         hide(obj, del_scenario_1, del_scenario_1.length);
       }
-      ;
 
       // Scenario 2: Handle the same checkbox being clicked twice
-      del_scenario_2 = [];
+      let del_scenario_2 = [];
       for (let i = 0; i < active_selections.length; i++) {
         if (active_selections[i]) {
           if (active_selections[i]['td_id'] === td_id && active_selections[i]['tr_id'] === tr_id) {
             del_scenario_2.push(i);
           }
-          ;
         }
-        ;
       }
-      ;
       if (del_scenario_2.length === 2) {
         hide(obj, del_scenario_2, del_scenario_2.length);
       }
-      ;
     }
-    ;
 
     // HANDLE TOPPINGS
     if (data_toppings === 'true') {
@@ -218,15 +209,11 @@ document.addEventListener('DOMContentLoaded', function () {
           if (!(active_selections[i]['td_id'] === td_id) && active_selections[i]['tr_id'] === tr_id) {
             del_scenario_1.push(i);
           }
-          ;
         }
-        ;
       }
-      ;
       if (del_scenario_1.length === 1) {
         hide(obj, del_scenario_1, del_scenario_1.length);
       }
-      ;
 
       // Scenario 2: Handle the same checkbox being clicked twice
       del_scenario_2 = [];
@@ -235,22 +222,16 @@ document.addEventListener('DOMContentLoaded', function () {
           if (active_selections[i]['td_id'] === td_id && active_selections[i]['tr_id'] === tr_id) {
             del_scenario_2.push(i);
           }
-          ;
         }
-        ;
       }
-      ;
       if (del_scenario_2.length === 2) {
         hide(obj, del_scenario_2, del_scenario_2.length);
       }
-      ;
+
     }
-    ;
+  }
 
-  };
-
-  // --------------------- SHOW EXTRAS -------------------------------------------
-
+  // show extras on click of subs
   function show_extras(tr_id, size) {
 
     // Create a new row, <tr>, that includes list of extras.
@@ -287,7 +268,6 @@ document.addEventListener('DOMContentLoaded', function () {
           td_extras_price.append(extra_price_lg, br_price);
           price = extra_price_lg;
         }
-        ;
 
         // Create a checkbox
         const br_checkbox = document.createElement('br');
@@ -309,16 +289,12 @@ document.addEventListener('DOMContentLoaded', function () {
             td_extras_price.append(extra_price_lg, br_extras_prices);
             price = extra_price_lg;
           }
-          ;
 
           // Create a checkbox
           td_extras_checkbox.append(create_checkbox(tr_id, extra, limit, price, size));
         }
-        ;
       }
-      ;
     }
-    ;
 
     // Stitch together the extras row, <tr>, that will be inserted into the DOM
     td_extras.append(ul_extras);
@@ -333,8 +309,7 @@ document.addEventListener('DOMContentLoaded', function () {
         second_table.childNodes[index(tr_id, tr_extras.dataset.category) + 1]);
   };
 
-  // --------------------- SHOW TOPPINGS -----------------------------------------
-
+  // show toppings on click of pizza
   function show_toppings(tr_id, size, limit) {
 
     // Create a new row, <tr>, that includes list of toppings.
@@ -349,7 +324,7 @@ document.addEventListener('DOMContentLoaded', function () {
     for (let i = 0; i < JSON.parse(storage_toppings).length; i++) {
 
       // Parse storage_toppings string and grab the name of the individual topping
-      topping = JSON.parse(storage_toppings)[i]['fields']['name']
+      let topping = JSON.parse(storage_toppings)[i]['fields']['name']
 
       // Create list of pizza toppings
       ul_toppings.append(create_list(topping));
@@ -380,14 +355,14 @@ document.addEventListener('DOMContentLoaded', function () {
   function hide(obj, delete_index, scenario) {
 
     // Variables passed in from <input> attributes on index.html
-    tr_id = obj.getAttribute('data-tr_id');
+    let tr_id = obj.getAttribute('data-tr_id');
 
     // Scenario 1: If a different checkbox is checked but in the same row as
     // active selection, set *.clicked = false and clear that active selection
     // from active_selections[]
     if (delete_index && scenario === 1) {
-      var as_td_id = active_selections[delete_index[0]]['td_id']
-      var uncheck = document.querySelectorAll('[data-td_id = "' + as_td_id + '"]');
+      let as_td_id = active_selections[delete_index[0]]['td_id']
+      let uncheck = document.querySelectorAll('[data-td_id = "' + as_td_id + '"]');
       if (uncheck) {
         for (let i = 0; i < uncheck.length; i++) {
           uncheck[i].checked = false;
@@ -420,16 +395,7 @@ document.addEventListener('DOMContentLoaded', function () {
     ;
   };
 
-  // --------------------- INDEX -------------------------------------------------
-
-  // Figure out the index of the HTML child objects of <tbody>, namely topping and
-  // extra rows, <tr>'s, within the DOM. Pizza toppings go in a separate column
-  // from sub extras in the index.html DOM, so an attribute called 'category'
-  // was created to correcty determine the index of sub extras which is used to
-  // place them correctly on the webpage -- basically, pizzas and their toppings
-  // are in the left column, subs and their extras are in the right. If for some
-  // reason you want to scale up to 3 or more columns, you'll have to come up with
-  // a new system or create new categories.
+  // index function used for indexing tr's
   function index(tr_id, category) {
     let index = 0;
     if (category === 'extra') {
@@ -448,6 +414,7 @@ document.addEventListener('DOMContentLoaded', function () {
     return index;
   }
 
+  //create checkboxes and add disable events
   function create_checkbox(tr_id, name, limit, price, size) {
     const checkbox = document.createElement('input');
     checkbox.className = tr_id;
@@ -479,6 +446,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     };
     return checkbox;
-  };
+  }
 
 });
