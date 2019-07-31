@@ -63,7 +63,7 @@ def login_view(request):
             return HttpResponse('{"success": true, "message": ""}')
         else:
             return HttpResponse('{"success": false, "message": "Invalid username and/or password."}')
-    return render(request, "orders/landing.html", context)
+    return HttpResponseRedirect(reverse('index'))
 
 
 def logout_view(request):

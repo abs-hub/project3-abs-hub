@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (username && password) {
       // get csrf token and set it to request header
       const csrf_token = document.querySelector('#csrf_token').childNodes[0]['value'];
-      console.log(csrf_token);
       // make an AJAX call to server
       const request = new XMLHttpRequest();
       request.open('POST', '/landing');
